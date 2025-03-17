@@ -1,13 +1,9 @@
-// src/pages/Register.js
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styles/login.css"; // Import the login.css stylesheet
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import api from "../api"; // ✅ Use configured axios instance
 
 const Register = () => {
-  const [username, setUsername] = useState("");  // Use "username" per your backend
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,8 +12,8 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${API_BASE_URL}/register`, { username, email, password });
-      navigate("/login"); // Redirect to login after successful registration
+      await api.post("/register", { username, email, password }, { withCredentials: true });
+      navigate("/login"); // ✅ Redirect on success
     } catch (err) {
       setError(err.response?.data?.error || "Registration failed. Try again.");
     }
@@ -51,14 +47,6 @@ const Register = () => {
         />
         <button type="submit">Register</button>
       </form>
-      <footer>
-          <p style={{ marginBottom: "-10px", fontSize: "1.1rem", textAlign: "center" }}>
-            <strong>Developed by:</strong> Dr. Kato Samuel Namuene
-          </p>
-          <p style={{ fontSize: "1.1rem", textAlign: "center"  }}>
-            <strong>Email:</strong> kato.namuene@ubuea.cm
-          </p>
-        </footer>
     </div>
   );
 };
